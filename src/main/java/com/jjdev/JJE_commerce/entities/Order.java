@@ -1,12 +1,13 @@
 package com.jjdev.JJE_commerce.entities;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jjdev.JJE_commerce.entities.enums.OrderStatus;
 import jakarta.persistence.*;
-
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_order")
@@ -21,15 +22,16 @@ public class Order implements Serializable {
 
     private Integer orderStatus;
 
-
-
     @ManyToOne
     @JoinColumn(name = "client_id")
     private User client;
 
-     public Order(){
 
-     }
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> orderItems = new HashSet<>();
+
+
+    public Order(){}
 
     public Order(Long id, Instant moment, User client, OrderStatus orderStatus) {
         this.id = id;
@@ -64,6 +66,10 @@ public class Order implements Serializable {
 
     public OrderStatus getOrderStatus() {
         return OrderStatus.valueOf(orderStatus);
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
     public void setOrderStatus(OrderStatus orderStatus) {

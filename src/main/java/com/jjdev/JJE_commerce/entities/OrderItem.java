@@ -1,10 +1,10 @@
 package com.jjdev.JJE_commerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jjdev.JJE_commerce.entities.pk.OrderItemPk;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,7 +14,7 @@ public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private OrderItemPk id;
+    private OrderItemPk id = new OrderItemPk();
 
     private Integer quantity;
     private Double price;
@@ -28,6 +28,7 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }
