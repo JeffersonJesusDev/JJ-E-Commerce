@@ -1,7 +1,6 @@
 package com.jjdev.JJE_commerce.resources;
 
 import com.jjdev.JJE_commerce.entities.Product;
-import com.jjdev.JJE_commerce.repositories.ProductRepository;
 import com.jjdev.JJE_commerce.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
