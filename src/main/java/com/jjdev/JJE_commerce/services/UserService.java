@@ -2,8 +2,11 @@ package com.jjdev.JJE_commerce.services;
 
 import com.jjdev.JJE_commerce.entities.User;
 import com.jjdev.JJE_commerce.repositories.UserRepository;
+import com.jjdev.JJE_commerce.services.exceptions.DatabaseException;
 import com.jjdev.JJE_commerce.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +17,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
 
     public List<User> findAll(){
         return userRepository.findAll();
@@ -30,7 +32,13 @@ public class UserService {
     }
 
     public void deleteUser (Long id){
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public User update(Long id, User obj){
@@ -44,6 +52,5 @@ public class UserService {
         user.setEmail(obj.getEmail());
         user.setPhone(obj.getPhone());
     }
-
 
 }
